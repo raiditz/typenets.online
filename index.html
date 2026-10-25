@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TypePilot — Learn to type</title>
+    <meta name="theme-color" content="#0b0e14" />
+    <meta name="color-scheme" content="dark" />
+    <style>
+      html {
+        background: #0b0e14;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    /></noscript>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark">T</span
+        ><span>Type<span class="accent">Pilot</span></span></a
+      >
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
+      <nav class="nav">
+        <a class="active" href="index.html">Home</a
+        ><a href="typing.html">Practice</a><a href="lessons.html">Lessons</a
+        ><a href="test.html">Typing test</a
+        ><a href="statistics.html">Statistics</a
+        ><a href="type-settings.html">Settings</a><a href="help.html">Help</a>
+      </nav>
+    </header>
+    <main class="container">
+      <section class="home">
+        <div class="home-plane-doodle" aria-hidden="true">
+          <svg viewBox="0 0 170 64" role="presentation" focusable="false">
+            <path
+              class="plane-trail"
+              d="M4 40 C26 24, 46 54, 70 38 S112 22, 126 36"
+            >
+              <animate
+                attributeName="d"
+                dur="9s"
+                repeatCount="indefinite"
+                calcMode="spline"
+                keyTimes="0;0.5;1"
+                keySplines="0.45 0 0.55 1;0.45 0 0.55 1"
+                values="M4 40 C26 24, 46 54, 70 38 S112 22, 126 36;M4 40 C26 54, 46 24, 70 38 S112 52, 126 42;M4 40 C26 24, 46 54, 70 38 S112 22, 126 36"
+              />
+            </path>
+            <g class="plane-bob">
+              <g class="plane-sketch" transform="translate(120 20) rotate(8)">
+                <path
+                  d="M2 17 L17 13 L28 1 Q31 -1 32 3 L28 14 L41 17 Q44 19 40 21 L27 21 L20 31 Q18 33 17 30 L16 21 L3 20 Q-1 19 2 17 Z"
+                />
+                <path d="M9 17 L26 17 M18 14 L22 8 M18 21 L21 26" />
+              </g>
+            </g>
+          </svg>
+        </div>
+        <h1>
+          Type<span class="accent">Pilot</span><span class="caret-block"></span>
+        </h1>
+        <p
+          class="home-sub home-type"
+          id="homeType"
+          data-text="Learn touch typing and get faster, one key at a time."
+          aria-label="Learn touch typing and get faster, one key at a time."
+        >
+          <span id="homeTypeText" aria-hidden="true"></span
+          ><i class="home-type-caret" aria-hidden="true"></i>
+        </p>
+        <a class="btn btn-primary home-cta" href="typing.html"
+          >Start typing <kbd>Enter ↵</kbd></a
+        >
+        <div class="home-kb" id="homeKb" aria-hidden="true"></div>
+        <div class="home-paths">
+          <a class="home-path" href="typing.html"
+            ><span class="hk">⌨</span><b>Practice</b
+            ><small>Adaptive letters</small></a
+          >
+          <a class="home-path" href="lessons.html"
+            ><span class="hk">A</span><b>Lessons</b
+            ><small>34 lessons with games</small></a
+          >
+          <a class="home-path" href="test.html"
+            ><span class="hk">⏱</span><b>Typing test</b
+            ><small>Measure your speed</small></a
+          >
+        </div>
+        <div class="home-stats">
+          <span>BEST <b id="homeBest">—</b></span
+          ><span>ACCURACY <b id="homeAccuracy">—</b></span
+          ><span>TIME <b id="homeTime">0 min</b></span
+          ><span>LESSONS <b id="homeLessons">0</b></span>
+        </div>
+      </section>
+      <footer>
+        <span>© 2026 TypePilot</span><span></span
+        ><a href="type-settings.html">Settings ↗</a>
+      </footer>
+    </main>
+    <script defer src="curriculum.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="home.js"></script>
+    <script defer src="firebase-config.js"></script>
+  </body>
+</html>

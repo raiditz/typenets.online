@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Type Settings — TypePilot</title>
+    <meta name="theme-color" content="#0b0e14" />
+    <meta name="color-scheme" content="dark" />
+    <style>
+      html {
+        background: #0b0e14;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    /></noscript>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark">T</span
+        ><span>Type<span class="accent">Pilot</span></span></a
+      ><button class="menu-toggle">☰</button>
+      <nav class="nav">
+        <a href="index.html">Home</a><a href="typing.html">Practice</a
+        ><a href="lessons.html">Lessons</a><a href="test.html">Typing test</a
+        ><a href="statistics.html">Statistics</a
+        ><a class="active" href="type-settings.html">Settings</a
+        ><a href="help.html">Help</a>
+      </nav>
+    </header>
+    <main class="container page-container">
+      <div class="eyebrow">MAKE IT YOURS</div>
+      <h1>Type settings<span class="accent">.</span></h1>
+      <p class="page-intro">
+        Fine-tune your practice. Your preferences are saved automatically on
+        this device.
+      </p>
+      <div class="settings-layout">
+        <div class="settings-main">
+          <section class="panel settings-card">
+            <div class="settings-heading">
+              <span class="settings-icon">⌨</span>
+              <div>
+                <h2>Text & appearance</h2>
+                <p>Choose what appears in your practice text.</p>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Capital letters</b
+                ><small>Include uppercase characters in practice text.</small>
+              </div>
+              <label class="switch"
+                ><input id="capitals" type="checkbox" /><span></span
+              ></label>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Punctuation marks</b
+                ><small>Practice commas, periods, quotes, and symbols.</small>
+              </div>
+              <label class="switch"
+                ><input id="punctuation" type="checkbox" /><span></span
+              ></label>
+            </div>
+            <div class="setting-row range-row">
+              <div>
+                <b>Text visibility</b
+                ><small>Adjust how strongly the target text appears.</small>
+              </div>
+              <div class="range-control">
+                <input
+                  id="visibility"
+                  type="range"
+                  min="25"
+                  max="100"
+                  value="100"
+                /><span id="visibilityValue">100%</span>
+              </div>
+            </div>
+          </section>
+          <section class="panel settings-card">
+            <div class="settings-heading">
+              <span class="settings-icon">◈</span>
+              <div>
+                <h2>Practice length</h2>
+                <p>Choose how much text you want to work through.</p>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Daily practice goal</b
+                ><small
+                  >Minutes per day. Used to shade the calendar on the Statistics
+                  page.</small
+                >
+              </div>
+              <select id="dailyGoal">
+                <option value="5">5 minutes</option>
+                <option value="10">10 minutes</option>
+                <option value="15">15 minutes</option>
+                <option value="20">20 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="45">45 minutes</option>
+                <option value="60">60 minutes</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Number of words</b
+                ><small>Default length for free practice sessions.</small>
+              </div>
+              <select id="wordCount">
+                <option value="25">25 words</option>
+                <option value="50">50 words</option>
+                <option value="100">100 words</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Proficiency level</b
+                ><small
+                  >Normal: short, common words · Advanced: more challenging
+                  words, still kept compact (up to 7 characters). Adaptive key
+                  focus favors weaker letters without increasing word
+                  length.</small
+                >
+              </div>
+              <select id="proficiency">
+                <option value="normal">Normal</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Adaptive key focus</b
+                ><small
+                  >Favor words containing keys with lower accuracy or less
+                  practice, using your all-time key statistics.</small
+                >
+              </div>
+              <label class="switch"
+                ><input
+                  id="adaptivePractice"
+                  type="checkbox"
+                  checked /><span></span
+              ></label>
+            </div>
+          </section>
+          <section class="panel settings-card">
+            <div class="settings-heading">
+              <span class="settings-icon">⇧</span>
+              <div>
+                <h2>Progressive letter unlocking</h2>
+                <p>
+                  Start with a small set of letters. One new letter can unlock
+                  after a completed session when all currently available letters
+                  meet your target speed and the hidden accuracy requirement.
+                </p>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Enable letter unlocking</b
+                ><small
+                  >Generate practice text using only unlocked letters, similar
+                  to guided adaptive typing tutors.</small
+                >
+              </div>
+              <label class="switch"
+                ><input id="letterUnlock" type="checkbox" checked /><span></span
+              ></label>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Target typing speed</b
+                ><small
+                  >Every unlocked letter must meet this speed using its all-time
+                  key statistics before another letter unlocks.</small
+                >
+              </div>
+              <div class="range-control target-speed-control">
+                <input
+                  id="targetWpm"
+                  type="range"
+                  min="15"
+                  max="150"
+                  step="5"
+                  value="30"
+                /><output id="targetWpmValue" for="targetWpm">30 WPM</output>
+              </div>
+            </div>
+            <div
+              id="unlockSettingsPreview"
+              class="unlock-settings-preview"
+              aria-live="polite"
+            ></div>
+          </section>
+          <section class="panel settings-card">
+            <div class="settings-heading">
+              <span class="settings-icon">◎</span>
+              <div>
+                <h2>Typing feedback</h2>
+                <p>Set the coaching style that works for you.</p>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Stop cursor at error</b
+                ><small
+                  >When you type a wrong character, the cursor stays on that
+                  letter until you type the correct one. The mistake still
+                  counts in your statistics.</small
+                >
+              </div>
+              <label class="switch"
+                ><input id="stopAtError" type="checkbox" /><span></span
+              ></label>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Highlight mistakes</b
+                ><small>Mark incorrect characters as you type.</small>
+              </div>
+              <label class="switch"
+                ><input
+                  id="highlightErrors"
+                  type="checkbox"
+                  checked /><span></span
+              ></label>
+            </div>
+            <div class="setting-row">
+              <div>
+                <b>Sound feedback</b
+                ><small>Play a subtle sound when a lesson is completed.</small>
+              </div>
+              <label class="switch"
+                ><input id="soundFeedback" type="checkbox" /><span></span
+              ></label>
+            </div>
+          </section>
+          <div class="settings-actions">
+            <div class="settings-btns">
+              <button class="btn btn-secondary" id="resetSettings">
+                Reset defaults</button
+              ><button class="btn btn-secondary danger-btn" id="clearData">
+                Erase all progress &amp; statistics
+              </button>
+            </div>
+            <span id="settingsSaved" class="saved-note"
+              >✓ Settings saved automatically</span
+            >
+          </div>
+        </div>
+        <aside class="panel settings-preview">
+          <div class="eyebrow">LIVE PREVIEW</div>
+          <h3>Your practice, your way.</h3>
+          <div class="preview-text" id="settingsPreview">
+            The best way to improve is to practice a little every day.
+          </div>
+          <div class="preview-key-row">
+            <span>A</span><span>S</span><span>D</span
+            ><span class="preview-key-active">F</span><span>J</span
+            ><span>K</span><span>L</span>
+          </div>
+          <div class="preview-note">
+            <span>✦</span>
+            <p>
+              These settings affect free practice. Lesson progress and lesson
+              results remain separate.
+            </p>
+          </div>
+          <a class="btn btn-primary btn-full" href="typing.html"
+            >Start practicing →</a
+          >
+        </aside>
+      </div>
+      <footer>
+        <span>© 2026 TypePilot</span><span>Your setup, your pace.</span
+        ><a href="index.html">Back home ↗</a>
+      </footer>
+    </main>
+    <script defer src="curriculum.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="type-settings.js"></script>
+    <script defer src="firebase-config.js"></script>
+  </body>
+</html>

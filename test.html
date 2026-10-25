@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Typing Test — TypePilot</title>
+    <meta name="theme-color" content="#0b0e14" />
+    <meta name="color-scheme" content="dark" />
+    <style>
+      html {
+        background: #0b0e14;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    /></noscript>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="lessons.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark">T</span
+        ><span>Type<span class="accent">Pilot</span></span></a
+      ><button class="menu-toggle">☰</button>
+      <nav class="nav">
+        <a href="index.html">Home</a><a href="typing.html">Practice</a
+        ><a href="lessons.html">Lessons</a
+        ><a class="active" href="test.html">Typing test</a
+        ><a href="statistics.html">Statistics</a
+        ><a href="type-settings.html">Settings</a><a href="help.html">Help</a>
+      </nav>
+    </header>
+    <main class="container page-container">
+      <div class="page-title-row">
+        <div>
+          <div class="eyebrow">READY, SET, TYPE</div>
+          <h1>Typing test<span class="accent">.</span></h1>
+          <p>
+            Choose a time and start typing. The clock begins with your first
+            key, and your full statistics appear when time is up.
+          </p>
+        </div>
+        <a class="btn btn-secondary tt-multi" href="multiplayer.html"
+          >Multiplayer race →</a
+        >
+      </div>
+      <div id="tpProfileMount" data-autopen></div>
+      <div id="soloTestView">
+        <div class="tt-bar panel">
+          <div class="tt-seg" role="radiogroup" aria-label="Time limit">
+            <button
+              type="button"
+              class="tt-opt"
+              data-sec="30"
+              role="radio"
+              aria-checked="false"
+            >
+              30s</button
+            ><button
+              type="button"
+              class="tt-opt"
+              data-sec="60"
+              role="radio"
+              aria-checked="true"
+            >
+              60s</button
+            ><button
+              type="button"
+              class="tt-opt"
+              data-sec="120"
+              role="radio"
+              aria-checked="false"
+            >
+              2 min
+            </button>
+          </div>
+          <span class="muted tt-hint"
+            >Press <kbd class="kbd">Esc</kbd> to restart anytime</span
+          >
+        </div>
+        <section class="panel test-panel" id="testPanel">
+          <div class="test-live">
+            <div>
+              <small>TIME LEFT</small
+              ><strong id="testTime">60<span>s</span></strong>
+            </div>
+            <div><small>LIVE WPM</small><strong id="testWpm">0</strong></div>
+            <div>
+              <small>ACCURACY</small><strong id="testAccuracy">100%</strong>
+            </div>
+            <div><small>ERRORS</small><strong id="testErrors">0</strong></div>
+          </div>
+          <div
+            id="testText"
+            class="typing-text test-text"
+            aria-label="Typing test text"
+          ></div>
+          <p
+            id="testBook"
+            class="muted"
+            style="font-size: 11px; margin: 8px 0 0"
+          ></p>
+          <textarea
+            id="testInput"
+            class="typing-input"
+            placeholder="Start typing here…"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+            autofocus
+          ></textarea>
+          <div class="test-foot">
+            <span id="testStatus"
+              >Start typing to begin. The timer starts with your first
+              key.</span
+            ><button class="btn btn-secondary" id="restartTest" type="button">
+              ↻ Restart
+            </button>
+          </div>
+        </section>
+        <section id="testResult" class="panel result-panel hidden"></section>
+      </div>
+      <footer>
+        <span>© 2026 TypePilot</span><span>Test yourself, not your worth.</span
+        ><a href="statistics.html">All-time statistics ↗</a>
+      </footer>
+    </main>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+    <script defer src="supabase-config.js"></script>
+    <script defer src="curriculum.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="leaderboard.js"></script>
+    <script defer src="profile-ui.js"></script>
+    <script defer src="passages.js"></script>
+    <script defer src="test.js"></script>
+  </body>
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Practice — TypePilot</title>
+    <meta name="theme-color" content="#0b0e14" />
+    <meta name="color-scheme" content="dark" />
+    <style>
+      html {
+        background: #0b0e14;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    /></noscript>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark">T</span
+        ><span>Type<span class="accent">Pilot</span></span></a
+      ><button class="menu-toggle">☰</button>
+      <nav class="nav">
+        <a href="index.html">Home</a
+        ><a class="active" href="typing.html">Practice</a
+        ><a href="lessons.html">Lessons</a><a href="test.html">Typing test</a
+        ><a href="statistics.html">Statistics</a
+        ><a href="type-settings.html">Settings</a><a href="help.html">Help</a>
+      </nav>
+    </header>
+    <main class="container page-container">
+      <div class="page-title-row">
+        <div>
+          <div class="eyebrow">YOUR DAILY WORKOUT</div>
+          <h1>Free practice<span class="accent">.</span></h1>
+          <p>Settle in, find your rhythm, and let the keys become familiar.</p>
+        </div>
+        <a class="btn btn-secondary" href="type-settings.html"
+          >⚙ Practice settings</a
+        >
+      </div>
+      <section class="practice-layout">
+        <div class="panel practice-panel" id="practicePanel">
+          <div class="practice-toolbar">
+            <span class="pill">CUSTOM PRACTICE</span>
+            <div class="toolbar-controls">
+              <label
+                >Words
+                <select id="practiceWords">
+                  <option>25</option>
+                  <option selected>50</option>
+                  <option>100</option>
+                </select></label
+              >
+            </div>
+          </div>
+          <div id="letterBar" class="letter-bar-wrap" aria-live="polite"></div>
+          <div class="live-stats">
+            <div><small>WPM</small><strong id="liveWpm">0</strong></div>
+            <div><small>ACCURACY</small><strong id="liveAcc">100%</strong></div>
+            <div><small>TIME</small><strong id="liveTime">0:00</strong></div>
+            <div><small>ERRORS</small><strong id="liveErrors">0</strong></div>
+          </div>
+          <div
+            id="typingArea"
+            class="typing-area idle"
+            aria-label="Typing practice area"
+          >
+            <div
+              id="typingText"
+              class="typing-text practice-text"
+              aria-live="off"
+            ></div>
+            <div id="startPrompt" class="start-prompt" role="status"></div>
+            <textarea
+              id="typingCapture"
+              class="sr-capture"
+              aria-label="Typing input. Start typing to begin practice."
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+            ></textarea>
+          </div>
+          <div class="practice-actions">
+            <span id="practiceHint">Start typing to begin · Esc pauses</span>
+            <div>
+              <button
+                class="btn btn-secondary"
+                id="resetPractice"
+                title="Start this text again"
+              >
+                ↻ Reset</button
+              ><button
+                class="btn btn-secondary"
+                id="nextPractice"
+                title="Get a new text"
+              >
+                Next text ⇥</button
+              ><button
+                class="btn btn-secondary hidden"
+                id="previewSessionBtn"
+                title="Preview the completed session"
+              >
+                ▶ Preview
+              </button>
+            </div>
+          </div>
+        </div>
+        <aside class="panel side-panel">
+          <div class="eyebrow">SESSION GUIDE</div>
+          <h3>Make every word count.</h3>
+          <div class="guide-step">
+            <span>01</span>
+            <div>
+              <b>Relax your hands</b
+              ><small>Keep your wrists neutral and shoulders loose.</small>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span>02</span>
+            <div>
+              <b>Look at the text</b
+              ><small>Try not to look down at your keyboard.</small>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span>03</span>
+            <div>
+              <b>Choose accuracy</b
+              ><small>Build clean habits before chasing speed.</small>
+            </div>
+          </div>
+          <div class="side-tip">
+            <span>✦</span>
+            <p>
+              Practice text adapts to your key mastery, giving weaker and
+              less-practiced letters more attention over time.
+            </p>
+          </div>
+          <a class="text-link" href="statistics.html"
+            >See all-time statistics →</a
+          >
+        </aside>
+      </section>
+      <div id="sessionResult" class="panel result-panel hidden"></div>
+      <div class="replay-modal" id="replayModal" aria-hidden="true">
+        <div class="replay-backdrop" data-close-replay></div>
+        <section
+          class="replay-dialog panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="replayTitle"
+        >
+          <div class="panel-heading">
+            <div>
+              <div class="eyebrow">SESSION PREVIEW</div>
+              <h2 id="replayTitle">Review your session</h2>
+              <p id="replaySubtitle" class="panel-subtitle"></p>
+            </div>
+            <button class="cal-btn" id="closeReplay" aria-label="Close preview">
+              ✕
+            </button>
+          </div>
+          <div class="replay-metrics" id="replayMetrics"></div>
+          <div
+            id="replayText"
+            class="typing-text replay-text"
+            aria-label="Replayed typing session"
+          ></div>
+          <div class="replay-status">
+            <span id="replayStatus">Ready to replay.</span
+            ><span id="replayPosition">0 / 0 actions</span>
+          </div>
+          <input
+            id="replayScrub"
+            class="replay-scrub"
+            type="range"
+            min="0"
+            max="0"
+            value="0"
+            step="1"
+            aria-label="Preview position"
+          />
+          <div class="replay-controls">
+            <button class="btn btn-primary" id="replayPlay">
+              ▶ Play preview</button
+            ><button class="btn btn-secondary" id="replayRestart">
+              ↻ Restart</button
+            ><label
+              >Speed
+              <select id="replaySpeed">
+                <option value="1">1×</option>
+                <option value="2" selected>2×</option>
+              </select></label
+            >
+          </div>
+          <p class="replay-note">
+            This preview is only kept until you start the next session.
+          </p>
+        </section>
+      </div>
+      <footer>
+        <span>© 2026 TypePilot</span><span>Keep showing up.</span
+        ><a href="lessons.html">Continue learning ↗</a>
+      </footer>
+    </main>
+    <script defer src="curriculum.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="typing.js"></script>
+    <script defer src="firebase-config.js"></script>
+  </body>
+</html>
