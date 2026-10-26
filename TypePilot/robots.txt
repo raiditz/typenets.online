@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://typepilot.netlify.app/sitemap.xml

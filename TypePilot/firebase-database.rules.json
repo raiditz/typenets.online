@@ -1,0 +1,86 @@
+{
+  "rules": {
+    "users": {
+      "$userId": {
+        ".read": "auth != null && auth.uid === $userId",
+        ".write": "auth != null && auth.uid === $userId",
+        "displayName": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 40"
+        },
+        "username": {
+          ".validate": "newData.isString() && newData.val().matches(/^[a-z0-9_]{3,20}$/)"
+        },
+        "avatar": {
+          ".validate": "newData.isString() && newData.val().length <= 16"
+        },
+        "photo": {
+          ".validate": "newData.isString() && newData.val().length <= 60000"
+        },
+        "noPhoto": {
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    },
+    "rooms": {
+      ".read": "auth != null",
+      ".indexOn": [
+        "open"
+      ],
+      "$roomId": {
+        ".write": "auth != null && ((!data.exists() && newData.child('open').val() === true && newData.child('textId').isNumber() && newData.child('createdAt').isNumber() && newData.child('players').numChildren() === 1 && newData.child('players').hasChild(auth.uid)) || (data.exists() && !newData.exists() && !data.child('players').exists()))",
+        "open": {
+          ".write": "auth != null && data.val() === true && newData.val() === false && root.child('rooms').child($roomId).child('players').child(auth.uid).exists()"
+        },
+        "startAt": {
+          ".write": "auth != null && !data.exists() && newData.isNumber() && newData.val() >= now + 3000 && newData.val() <= now + 8000 && root.child('rooms').child($roomId).child('createdAt').val() <= now - 10000 && root.child('rooms').child($roomId).child('players').numChildren() >= 2 && root.child('rooms').child($roomId).child('players').numChildren() <= 5 && root.child('rooms').child($roomId).child('players').child(auth.uid).exists()"
+        },
+        "players": {
+          "$playerId": {
+            ".write": "auth != null && auth.uid === $playerId && (data.exists() || (newData.exists() && root.child('rooms').child($roomId).child('open').val() === true && !root.child('rooms').child($roomId).child('startAt').exists() && root.child('rooms').child($roomId).child('players').numChildren() < 5))",
+            ".validate": "!newData.exists() || (newData.hasChildren(['name','avatar','progress','wpm','accuracy','finished','joinedAt']) && newData.child('name').isString() && newData.child('name').val().length <= 24 && newData.child('avatar').isString() && newData.child('avatar').val().length <= 16 && newData.child('progress').isNumber() && newData.child('progress').val() >= 0 && newData.child('progress').val() <= 100 && newData.child('wpm').isNumber() && newData.child('wpm').val() >= 0 && newData.child('wpm').val() <= 300 && newData.child('accuracy').isNumber() && newData.child('accuracy').val() >= 0 && newData.child('accuracy').val() <= 100 && newData.child('finished').isBoolean() && newData.child('joinedAt').isNumber())",
+            "$other": {
+              ".validate": "false"
+            },
+            "errors": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000"
+            },
+            "typedChars": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000"
+            },
+            "finishAt": {
+              ".validate": "newData.isNumber()"
+            }
+          }
+        }
+      }
+    },
+    "leaderboard": {
+      ".read": "true",
+      ".indexOn": [
+        "wpm"
+      ],
+      "$uid": {
+        ".write": "false",
+        ".validate": "!newData.exists() || newData.hasChildren(['name','wpm','accuracy','duration','at'])",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 24"
+        },
+        "wpm": {
+          ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 300 && (!data.exists() || newData.val() >= data.val())"
+        },
+        "accuracy": {
+          ".validate": "newData.isNumber() && newData.val() >= 90 && newData.val() <= 100"
+        },
+        "duration": {
+          ".validate": "newData.isNumber() && newData.val() >= 15 && newData.val() <= 600"
+        },
+        "at": {
+          ".validate": "newData.val() === now"
+        },
+        "$other": {
+          ".validate": "false"
+        }
+      }
+    }
+  }
+}
