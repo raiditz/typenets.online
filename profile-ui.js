@@ -7,11 +7,8 @@
 (function () {
   "use strict";
   const LB = window.TPLeaderboard;
-  const AVATARS = [
-    "😀","😎","🤓","🥳","😊","🤠","🧐","😺","🐱","🐼","🐨","🐯","🦊","🐸","🐵","🐧","🦉",
-    "🦄","🐲","🐙","🦋","🐝","🐢","🦖","🦈","🐬","🦜","🦚","🦁","🐻","🐰","🦝","🐮","🐷",
-    "🐶","🐹","🐣","🦩","🐳","🦕","🍀","🌟","🔥","⚡","🌈","🎯","🚀","🎮",
-  ];
+  const AV = window.TPAvatars;
+  const AVATAR_COUNT = AV.COUNT;
   const MONTHLY_LIMIT = 2,
     DEBOUNCE_MS = 300;
   const esc = (s) =>
@@ -90,7 +87,7 @@
     const mount = document.getElementById("tpProfileMount");
     if (!mount) return;
     mount.innerHTML =
-      '<section class="panel tpp-panel" id="tpProfilePanel"><div class="tpp-who"><span class="tpp-ava" id="tpProfileAvatar" aria-hidden="true">👤</span><div class="tpp-who-text"><div class="tpp-name" id="tpProfileDisplay"></div><div class="tpp-sub" id="tpProfileSub"></div></div></div><button class="btn btn-secondary" type="button" id="tpOpenProfile"></button></section>';
+      '<section class="panel tpp-panel" id="tpProfilePanel"><div class="tpp-who"><span class="tpp-ava" id="tpProfileAvatar" aria-hidden="true"></span><div class="tpp-who-text"><div class="tpp-name" id="tpProfileDisplay"></div><div class="tpp-sub" id="tpProfileSub"></div></div></div><button class="btn btn-secondary" type="button" id="tpOpenProfile"></button></section>';
     document
       .getElementById("tpOpenProfile")
       .addEventListener("click", () => open(false));
@@ -103,7 +100,7 @@
       sub = document.getElementById("tpProfileSub"),
       btn = document.getElementById("tpOpenProfile");
     if (!configured()) {
-      av.textContent = "👤";
+      av.innerHTML = AV.html(null);
       nameEl.textContent = "Profile unavailable";
       sub.textContent =
         "Add your Supabase keys in supabase-config.js to enable usernames.";
@@ -112,7 +109,7 @@
     }
     btn.hidden = false;
     if (profile && profile.username) {
-      av.textContent = AVATARS[Number(profile.avatar_id) || 0] || AVATARS[0];
+      av.innerHTML = AV.html(Number(profile.avatar_id) || 0);
       nameEl.textContent = "@" + profile.username;
       const r = remaining();
       sub.classList.toggle("is-warn", r === 0 && !panelFlash);
@@ -126,7 +123,7 @@
               : plural(r) + " left this month");
       btn.textContent = "Edit profile";
     } else {
-      av.textContent = "👤";
+      av.innerHTML = AV.html(null);
       nameEl.textContent = "Choose your username";
       sub.classList.remove("is-warn");
       sub.textContent =
@@ -146,7 +143,7 @@
       '<h2 id="tppTitle"></h2><p class="tpp-intro" id="tppIntro"></p>' +
       '<form id="tppForm" novalidate>' +
       '<div class="tpp-row">' +
-      '<div class="tpp-avawrap"><button type="button" class="tpp-avabtn" id="tppAvaBtn" aria-haspopup="dialog" aria-expanded="false" aria-label="Choose avatar"><span id="tppAvaCur">😀</span><i aria-hidden="true">✎</i></button>' +
+      '<div class="tpp-avawrap"><button type="button" class="tpp-avabtn" id="tppAvaBtn" aria-haspopup="dialog" aria-expanded="false" aria-label="Choose avatar"><span id="tppAvaCur"></span><i aria-hidden="true">✎</i></button>' +
       '<div class="tpp-pop" id="tppPop" role="dialog" aria-label="Choose an avatar" hidden><div class="tpp-grid" id="tppGrid"></div></div></div>' +
       '<div class="tpp-field"><label for="tppName">Username</label><div class="tpp-input" id="tppInputBox"><span aria-hidden="true">@</span>' +
       '<input id="tppName" maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="swift_typist" aria-describedby="tppStatus"></div></div>' +
@@ -179,10 +176,10 @@
       els[k.toLowerCase()] = modal.querySelector("#tpp" + k);
     });
 
-    AVATARS.forEach((a, i) => {
+    for (let i = 0; i < AVATAR_COUNT; i++) {
       const b = document.createElement("button");
       b.type = "button";
-      b.textContent = a;
+      b.innerHTML = AV.html(i);
       b.setAttribute("role", "option");
       b.setAttribute("aria-label", "Avatar " + (i + 1));
       b.addEventListener("click", () => {
@@ -192,7 +189,7 @@
         renderState();
       }); // choosing closes the popover straight away
       els.grid.appendChild(b);
-    });
+    }
     els.grid.setAttribute("role", "listbox");
     els.grid.addEventListener("keydown", onGridKey);
 
@@ -213,7 +210,7 @@
   }
 
   function paintAvatar() {
-    els.avacur.textContent = AVATARS[selected] || AVATARS[0];
+    els.avacur.innerHTML = AV.html(selected);
     [...els.grid.children].forEach((b, i) => {
       const on = i === selected;
       b.classList.toggle("is-on", on);
@@ -481,7 +478,8 @@
     note = "";
     suggestions = null;
     saving = false;
-    selected = profile ? Number(profile.avatar_id) || 0 : 0;
+    // new users get a random picture (no fixed default); existing users keep theirs
+    selected = profile ? Number(profile.avatar_id) || 0 : AV.random();
     els.name.value = profile ? profile.username : "";
     els.pop.hidden = true;
     els.avabtn.setAttribute("aria-expanded", "false");
@@ -569,7 +567,7 @@
 
   /* ---------- public API (multiplayer uses needsProfile/require/get) ---------- */
   window.TPProfile = {
-    avatars: AVATARS,
+    avatars: AVATAR_COUNT,
     ready,
     get: () => profile,
     needsProfile: () => configured() && !profile && !loadError,

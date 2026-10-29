@@ -68,56 +68,6 @@
       avatar = "";
     // The saved Supabase username/avatar is the canonical identity for both solo
     // leaderboard results and Firebase multiplayer. Keep older hints as fallback.
-    const profileAvatars = [
-      "😀",
-      "😎",
-      "🤓",
-      "🥳",
-      "😊",
-      "🤠",
-      "🧐",
-      "😺",
-      "🐱",
-      "🐼",
-      "🐨",
-      "🐯",
-      "🦊",
-      "🐸",
-      "🐵",
-      "🐧",
-      "🦉",
-      "🦄",
-      "🐲",
-      "🐙",
-      "🦋",
-      "🐝",
-      "🐢",
-      "🦖",
-      "🦈",
-      "🐬",
-      "🦜",
-      "🦚",
-      "🦁",
-      "🐻",
-      "🐰",
-      "🦝",
-      "🐮",
-      "🐷",
-      "🐶",
-      "🐹",
-      "🐣",
-      "🦩",
-      "🐳",
-      "🦕",
-      "🍀",
-      "🌟",
-      "🔥",
-      "⚡",
-      "🌈",
-      "🎯",
-      "🚀",
-      "🎮",
-    ];
     try {
       const profile =
         (window.TPProfile && TPProfile.get()) ||
@@ -126,8 +76,7 @@
         );
       if (profile && profile.username) {
         name = String(profile.username).trim();
-        avatar =
-          profileAvatars[Number(profile.avatar_id) || 0] || profileAvatars[0];
+        avatar = TPAvatars.token(Number(profile.avatar_id) || 0);
       }
     } catch (_) {}
     if (!name) {
@@ -142,7 +91,7 @@
         );
         if (h && h.uid) {
           name = h.displayName || h.username || name;
-          avatar = h.avatar || avatar;
+          avatar = TPAvatars.parse(h.avatar) !== null ? h.avatar : avatar;
         }
       } catch (_) {}
     }
@@ -155,20 +104,18 @@
         const n = String(Math.floor(1000 + Math.random() * 9000));
         g = {
           name: "Typist " + n,
-          avatar: ["🐼", "🦊", "🐯", "🐸", "🐨", "🐙", "🦉", "🐧", "🦄", "🐻"][
-            Math.floor(Math.random() * 10)
-          ],
+          avatar: TPAvatars.token(TPAvatars.random()),
         };
         try {
           localStorage.setItem("typepilotRaceGuest", JSON.stringify(g));
         } catch (_) {}
       }
       name = g.name;
-      avatar = g.avatar;
+      avatar = TPAvatars.parse(g.avatar) !== null ? g.avatar : TPAvatars.token(TPAvatars.random());
     }
     return {
       name: String(name).slice(0, 24),
-      avatar: avatar || "⌨️",
+      avatar: avatar || TPAvatars.token(TPAvatars.random()),
       progress: 0,
       wpm: 0,
       accuracy: 100,
@@ -541,7 +488,7 @@
       .map(
         (pl, i) => `
       <div class="mp-lane${pl.id === uid ? " is-me" : ""}" data-id="${esc(pl.id)}" style="--c:${COLORS[i % COLORS.length]};--p:0">
-        <div class="mp-who"><span class="mp-ava">${esc(pl.avatar || "⌨️")}</span><span class="mp-name"><b>${esc(pl.name || "Typist")}${pl.id === uid ? " (you)" : ""}</b><small class="mp-lane-wpm">0 WPM</small></span></div>
+        <div class="mp-who"><span class="mp-ava">${TPAvatars.htmlFromToken(pl.avatar)}</span><span class="mp-name"><b>${esc(pl.name || "Typist")}${pl.id === uid ? " (you)" : ""}</b><small class="mp-lane-wpm">0 WPM</small></span></div>
         <div class="mp-road"><div class="mp-car">${CAR}</div><i class="mp-flag" aria-hidden="true"></i></div>
       </div>`,
       )
@@ -771,7 +718,7 @@
       for (let i = 0; i < NEED; i++) {
         const p = ps[i];
         html += p
-          ? `<div class="mp-slot is-in" style="--c:${COLORS[i % COLORS.length]}"><span class="mp-slot-ava">${esc(p.avatar || "⌨️")}</span><small>${esc(p.id === uid ? "You" : p.name)}</small></div>`
+          ? `<div class="mp-slot is-in" style="--c:${COLORS[i % COLORS.length]}"><span class="mp-slot-ava">${TPAvatars.htmlFromToken(p.avatar)}</span><small>${esc(p.id === uid ? "You" : p.name)}</small></div>`
           : `<div class="mp-slot"><span class="mp-slot-ava" aria-hidden="true"></span><small>Waiting…</small></div>`;
       }
       $("mpSlots").innerHTML = html;
@@ -841,7 +788,7 @@
         );
     } catch (_) {}
     $("mpResults").innerHTML =
-      `<h3>${esc(headline)}</h3><div class="table-scroll"><table><thead><tr><th>Place</th><th>Typist</th><th>WPM</th><th>Accuracy</th><th>Time</th></tr></thead><tbody>${rows.map((r, i) => `<tr class="${r.id === uid ? "is-me" : ""}"><td>${r.finished ? i + 1 : "–"}</td><td>${esc(r.avatar || "")} ${esc(r.name || "Typist")}${r.id === uid ? " (you)" : ""}</td><td>${Math.round(r.wpm || 0)}</td><td>${Math.round(r.accuracy ?? 100)}%</td><td>${r.finished && r.finishAt && start ? ((r.finishAt - start) / 1000).toFixed(1) + "s" : "Did not finish"}</td></tr>`).join("")}</tbody></table></div><section class="score-board"><h3>Your multiplayer history <span class="muted">· this browser</span></h3>${
+      `<h3>${esc(headline)}</h3><div class="table-scroll"><table><thead><tr><th>Place</th><th>Typist</th><th>WPM</th><th>Accuracy</th><th>Time</th></tr></thead><tbody>${rows.map((r, i) => `<tr class="${r.id === uid ? "is-me" : ""}"><td>${r.finished ? i + 1 : "–"}</td><td><span class="mp-res-ava">${TPAvatars.htmlFromToken(r.avatar)}</span>${esc(r.name || "Typist")}${r.id === uid ? " (you)" : ""}</td><td>${Math.round(r.wpm || 0)}</td><td>${Math.round(r.accuracy ?? 100)}%</td><td>${r.finished && r.finishAt && start ? ((r.finishAt - start) / 1000).toFixed(1) + "s" : "Did not finish"}</td></tr>`).join("")}</tbody></table></div><section class="score-board"><h3>Your multiplayer history <span class="muted">· this browser</span></h3>${
         localScores.length
           ? `<div class="table-scroll"><table><thead><tr><th>Date</th><th>Name</th><th>Place</th><th>WPM</th><th>Accuracy</th></tr></thead><tbody>${localScores
               .slice(-10)

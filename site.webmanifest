@@ -1,7 +1,7 @@
 {
   "name": "TypeNets",
   "short_name": "TypeNets",
-  "description": "Free typing practice, touch typing lessons, typing tests and multiplayer races.",
+  "description": "Free typing practice, typing speed tests and multiplayer races. No sign-up needed.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

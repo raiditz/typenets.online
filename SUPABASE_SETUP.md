@@ -26,7 +26,7 @@ Deploy the TypeNets folder to Cloudflare Pages as a static site. The root should
 ## Username + avatar profile (new)
 After applying the existing schema, run `supabase-profile-migration.sql` in SQL Editor. This creates unique usernames, a profile table, an RPC that enforces two username changes per calendar month, and `avatar_id` on leaderboard rows. The browser profile uses the same Supabase anonymous-auth user, so it persists in that browser/profile; clearing site data or switching browsers can lose access to an anonymous account. For durable cross-device identity, add a real sign-in provider and account recovery. Never put a service-role key in the client. Username availability checks are advisory; the database unique constraint is authoritative.
 
-In `supabase-config.js`, set the Project URL and the publishable/anon key. Then refresh the test page. Usernames are 3–20 lowercase letters, numbers, or underscores; 48 emoji avatars are included.
+In `supabase-config.js`, set the Project URL and the publishable/anon key. Then refresh the test page. Usernames are 3–20 lowercase letters, numbers, or underscores; 48 image avatars are included (`/avatars`).
 
 ## Profile update v2 (run once)
 Run `supabase-profile-migration-v2.sql` in the SQL Editor (after the two earlier files). It adds `get_username_status()`, which lets the editor show "N of 2 username changes left" without spending one. The editor still works without it, but cannot show or pre-lock the monthly count.
