@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="TypeNets logo">
+  <title>TypeNets</title>
+  <rect width="512" height="512" rx="112" fill="#a3e635"/>
+  <g stroke="#0a0a0a" stroke-width="22" stroke-linecap="round" fill="none">
+    <path d="M256 70L318 132"/>
+    <path d="M256 70L194 132"/>
+    <path d="M194 132L256 194"/>
+    <path d="M194 132L132 194"/>
+    <path d="M132 194L194 256"/>
+    <path d="M132 194L70 256"/>
+    <path d="M70 256L132 318"/>
+    <path d="M318 132L380 194"/>
+    <path d="M318 132L256 194"/>
+    <path d="M256 194L318 256"/>
+    <path d="M256 194L194 256"/>
+    <path d="M194 256L256 318"/>
+    <path d="M194 256L132 318"/>
+    <path d="M132 318L194 380"/>
+    <path d="M380 194L442 256"/>
+    <path d="M380 194L318 256"/>
+    <path d="M318 256L380 318"/>
+    <path d="M318 256L256 318"/>
+    <path d="M256 318L318 380"/>
+    <path d="M256 318L194 380"/>
+    <path d="M194 380L256 442"/>
+    <path d="M442 256L380 318"/>
+    <path d="M380 318L318 380"/>
+    <path d="M318 380L256 442"/>
+  </g>
+  <g fill="#0a0a0a">
+    <circle cx="256" cy="70" r="30"/>
+    <circle cx="194" cy="132" r="30"/>
+    <circle cx="132" cy="194" r="30"/>
+    <circle cx="70" cy="256" r="30"/>
+    <circle cx="318" cy="132" r="30"/>
+    <circle cx="256" cy="194" r="30"/>
+    <circle cx="194" cy="256" r="30"/>
+    <circle cx="132" cy="318" r="30"/>
+    <circle cx="380" cy="194" r="30"/>
+    <circle cx="318" cy="256" r="30"/>
+    <circle cx="256" cy="318" r="30"/>
+    <circle cx="194" cy="380" r="30"/>
+    <circle cx="442" cy="256" r="30"/>
+    <circle cx="380" cy="318" r="30"/>
+    <circle cx="318" cy="380" r="30"/>
+    <circle cx="256" cy="442" r="30"/>
+  </g>
+</svg>
