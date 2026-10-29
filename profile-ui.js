@@ -82,6 +82,146 @@
     return profile;
   })();
 
+  /* ---------- surprise: party poppers + confetti ---------- */
+  const SURPRISE_KEY = "typenets_surprise_anime_seen";
+  const surpriseSeen = () => {
+    try {
+      return localStorage.getItem(SURPRISE_KEY) === "1";
+    } catch (_) {
+      return true; // storage blocked: never replay on every open
+    }
+  };
+  const markSurpriseSeen = () => {
+    try {
+      localStorage.setItem(SURPRISE_KEY, "1");
+    } catch (_) {}
+  };
+  let partyRun = null;
+  function party() {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (partyRun) return; // one at a time
+    const cv = document.createElement("canvas");
+    cv.className = "tpp-party";
+    cv.setAttribute("aria-hidden", "true");
+    document.body.appendChild(cv);
+    const ctx = cv.getContext("2d");
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let W = 0, H = 0;
+    const fit = () => {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      cv.width = W * dpr;
+      cv.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    fit();
+    const COLORS = ["#ff5d8f", "#ffb703", "#4cc9f0", "#7b6cf6", "#2ec4b6", "#ff8c42", "#f72585", "#80ed99"];
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const parts = [];
+    const small = W < 520;
+    const burst = (x, y, dir, n) => {
+      // dir: -1 shoots up-left of the popper, +1 up-right; poppers sit in the bottom corners and fire inwards
+      for (let i = 0; i < n; i++) {
+        const ang = (-Math.PI / 2) + dir * rnd(0.05, 0.75) + rnd(-0.12, 0.12);
+        const sp = rnd(small ? 9 : 12, small ? 17 : 24);
+        const kind = Math.random() < 0.25 ? "streamer" : Math.random() < 0.5 ? "rect" : "dot";
+        parts.push({
+          x, y,
+          vx: Math.cos(ang) * sp,
+          vy: Math.sin(ang) * sp,
+          w: kind === "streamer" ? rnd(3, 5) : rnd(6, 11),
+          h: kind === "streamer" ? rnd(16, 30) : rnd(5, 9),
+          kind,
+          rot: rnd(0, 6.28),
+          vr: rnd(-0.3, 0.3),
+          flip: rnd(0, 6.28),
+          vf: rnd(0.1, 0.35),
+          c: COLORS[(Math.random() * COLORS.length) | 0],
+          life: 0,
+          max: rnd(150, 230),
+        });
+      }
+    };
+    const poppers = [
+      { x: 14, dir: 1, at: 1 },
+      { x: W - 14, dir: -1, at: 1 },
+      { x: 14, dir: 1, at: 22 },
+      { x: W - 14, dir: -1, at: 22 },
+      { x: W * 0.5, dir: 1, at: 44, mid: true },
+    ];
+    let frame = 0;
+    const g = 0.32, drag = 0.985;
+    function tick() {
+      frame++;
+      ctx.clearRect(0, 0, W, H);
+      poppers.forEach((p) => {
+        if (p.at === frame) {
+          if (p.mid) {
+            burst(p.x, H * 0.95, -1, 28);
+            burst(p.x, H * 0.95, 1, 28);
+          } else burst(p.x, H - 18, p.dir, small ? 46 : 70);
+        }
+      });
+      // the two party poppers in the corners, kicking back when they fire
+      if (frame < 60) {
+        const kick = frame < 8 ? (8 - frame) * 1.2 : 0;
+        ctx.save();
+        ctx.font = (small ? 34 : 46) + "px serif";
+        ctx.textBaseline = "bottom";
+        ctx.globalAlpha = frame > 46 ? Math.max(0, (60 - frame) / 14) : 1;
+        ctx.save();
+        ctx.translate(8 - kick, H - 4 + kick);
+        ctx.fillText("🎉", 0, 0);
+        ctx.restore();
+        ctx.save();
+        ctx.translate(W - (small ? 44 : 58) + kick, H - 4 + kick);
+        ctx.scale(-1, 1);
+        ctx.fillText("🎉", -(small ? 34 : 46), 0);
+        ctx.restore();
+        ctx.restore();
+      }
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.life++;
+        p.vx *= drag;
+        p.vy = p.vy * drag + g;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.flip += p.vf;
+        const fade = p.life > p.max - 40 ? Math.max(0, (p.max - p.life) / 40) : 1;
+        if (p.life >= p.max || p.y > H + 40) {
+          parts.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = fade;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.scale(1, Math.cos(p.flip)); // tumbling paper
+        ctx.fillStyle = p.c;
+        if (p.kind === "dot") {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.h / 1.6, 0, 6.283);
+          ctx.fill();
+        } else ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      }
+      if (parts.length || frame < 50) partyRun.raf = requestAnimationFrame(tick);
+      else stop();
+    }
+    function stop() {
+      if (!partyRun) return;
+      cancelAnimationFrame(partyRun.raf);
+      window.removeEventListener("resize", fit);
+      cv.remove();
+      partyRun = null;
+    }
+    partyRun = { raf: requestAnimationFrame(tick) };
+    window.addEventListener("resize", fit);
+    setTimeout(stop, 7000); // hard stop, whatever happens
+  }
+
   /* ---------- page panel ---------- */
   function renderMount() {
     const mount = document.getElementById("tpProfileMount");
@@ -144,7 +284,10 @@
       '<form id="tppForm" novalidate>' +
       '<div class="tpp-row">' +
       '<div class="tpp-avawrap"><button type="button" class="tpp-avabtn" id="tppAvaBtn" aria-haspopup="dialog" aria-expanded="false" aria-label="Choose avatar"><span id="tppAvaCur"></span><i aria-hidden="true">✎</i></button>' +
-      '<div class="tpp-pop" id="tppPop" role="dialog" aria-label="Choose an avatar" hidden><div class="tpp-grid" id="tppGrid"></div></div></div>' +
+      '<div class="tpp-pop" id="tppPop" role="dialog" aria-label="Choose an avatar" hidden>' +
+      '<div class="tpp-surprise"><div class="tpp-sur-head"><span class="tpp-sur-title">Surprise</span><span class="tpp-sur-ed">Anime Edition</span></div>' +
+      '<p class="tpp-sur-text">Choose your favourite anime character from Blue Lock, Tokyo Revengers or Jujutsu Kaisen as your profile picture.</p></div>' +
+      '<div class="tpp-grid" id="tppGrid"></div></div></div>' +
       '<div class="tpp-field"><label for="tppName">Username</label><div class="tpp-input" id="tppInputBox"><span aria-hidden="true">@</span>' +
       '<input id="tppName" maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="swift_typist" aria-describedby="tppStatus"></div></div>' +
       "</div>" +
@@ -499,6 +642,16 @@
         paintPanel();
       }
     }); // refresh the monthly count in the background
+    if (!surpriseSeen()) {
+      // first time the profile opens: surprise! (plays once per browser) and show the picker with the message
+      markSurpriseSeen();
+      setTimeout(() => {
+        if (modal.hidden) return;
+        els.pop.hidden = false;
+        els.avabtn.setAttribute("aria-expanded", "true");
+        party();
+      }, 400);
+    }
   }
   function close(saved) {
     if (!modal || modal.hidden) return;
@@ -517,7 +670,8 @@
   async function submit(e) {
     e.preventDefault();
     if (saving || els.save.disabled) return;
-    const name = els.name.value;
+    const name = els.name.value,
+      isNew = !profile;
     saving = true;
     formMsg = "";
     renderState();
@@ -545,6 +699,10 @@
       }, 2600);
       close(true);
       settle(true);
+      if (isNew) {
+        markSurpriseSeen();
+        setTimeout(party, 250); // username just created: surprise!
+      }
       window.dispatchEvent(
         new CustomEvent("tp:profile-saved", { detail: profile }),
       );

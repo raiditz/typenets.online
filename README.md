@@ -3,17 +3,20 @@
 A multi-page static typing website for free adaptive typing practice, typing speed tests and real-time multiplayer races. Built with HTML, CSS, and vanilla JavaScript; no framework or build step is required.
 
 ## Files
-- `index.html`, `home.js` — typing-first homepage: live keyboard that lights up as you press keys, your real letter bar, and quick links
-- `typing.html`, `typing.js` — free practice typed directly on the text (no text box), Reset / Next text, stop-cursor-at-error, completed-session preview
+- `index.html` (/), `home.js` — typing-first homepage: live keyboard that lights up as you press keys, your real letter bar, and quick links
+- `practice.html` (/practice), `typing.js` — free practice typed directly on the text (no text box), Reset / Next text, stop-cursor-at-error, completed-session preview
 - `pip.js` — Pip, the cartoon co-pilot mascot (moods + speech bubble + performance comments)
 - `lessons.css` — shared styles still used by the typing-test and multiplayer pages
-- `multiplayer.html`, `multiplayer-page.js` — multiplayer race on its own page (searches automatically on arrival)
+- `multiplayer.html` (/multiplayer), `multiplayer-page.js` — multiplayer race on its own page (searches automatically on arrival)
 - `curriculum.js` — legacy 40-lesson data, still read by app.js for older stats code (4 modules x 10 lessons): keys, drills, words and tips for every lesson. Edit this file to change lesson content
-- `test.html`, `test.js` — solo typing test: choose 30s, 60s or 2 min only; full statistics (speed graph, keys to practise) appear after the test
-- `statistics.html`, `statistics.js` — all-time totals, WPM chart, session history, JSON export
-- `type-settings.html`, `type-settings.js` — capitals, punctuation, text visibility, word count, proficiency, target speed, and feedback settings
+- `typing-test.html` (/typing-test), `test.js` — solo typing test: choose 30s, 60s or 2 min only; full statistics (speed graph, keys to practise) appear after the test
+- `statistics.html` (/statistics), `statistics.js` — all-time totals, WPM chart, session history, JSON export
+- `settings.html` (/settings), `type-settings.js` — capitals, punctuation, text visibility, word count, proficiency, target speed, and feedback settings
 - `app.js` — shared data storage, settings, text generation, and utilities
 - `style.css` — shared responsive dark theme
+
+## Clean URLs
+Pages link to clean addresses that match the navigation bar: `/`, `/practice`, `/typing-test`, `/statistics`, `/settings`, `/help`, `/multiplayer`, `/privacy`, `/terms`. Cloudflare Pages serves `practice.html` at `/practice` automatically and redirects `/practice.html` to `/practice`. `_redirects` keeps the old names (`/typing`, `/test`, `/type-settings`) working. When opened from `file://` or localhost, `app.js` maps these links back to the `.html` files so local testing still works.
 
 ## Run in VS Code
 1. Extract the ZIP file.

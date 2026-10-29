@@ -10,10 +10,10 @@ This package switches the **solo-test global leaderboard** to Supabase. Lesson p
 5. Open SQL Editor, create a query, paste all of `supabase-schema.sql`, and run it. Confirm the `leaderboard` table exists.
 
 ## 2. Run locally
-Serve the folder over HTTP/HTTPS (for example VS Code Live Server), not by opening `index.html` as a `file://` URL. Open `test.html`, finish an eligible test (15+ seconds and 90%+ accuracy), then check the All-time best performers board.
+Serve the folder over HTTP/HTTPS (for example VS Code Live Server), not by opening `index.html` as a `file://` URL. Open `typing-test.html` (served at `/typing-test`), finish an eligible test (15+ seconds and 90%+ accuracy), then check the All-time best performers board.
 
 ## 3. Deploy frontend
-Deploy the TypeNets folder to Cloudflare Pages as a static site. The root should contain `index.html`, `test.html`, `supabase-config.js`, and the other HTML/JS/CSS files. No build command is required for this vanilla HTML project.
+Deploy the TypeNets folder to Cloudflare Pages as a static site. The root should contain `index.html`, `typing-test.html`, `supabase-config.js`, and the other HTML/JS/CSS files. No build command is required for this vanilla HTML project.
 
 ## 4. Keep Firebase for multiplayer for now
 `multiplayer.js` still depends on Firebase Authentication and Realtime Database. Keep the Firebase scripts/config/rules active until multiplayer is migrated and tested separately. The current Supabase integration does not yet replace Firebase multiplayer or cross-device progress sync.

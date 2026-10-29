@@ -1,5 +1,5 @@
 /* TypeNets solo typing test: pick 30s / 60s / 2 min, type, then see full statistics.
-   Multiplayer lives on its own page (multiplayer.html); reloading this page always opens the solo test. */
+   Multiplayer lives on its own page (/multiplayer); reloading this page always opens the solo test. */
 document.addEventListener("DOMContentLoaded", () => {
   const $ = (id) => document.getElementById(id),
     input = $("testInput"),
@@ -382,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="result-grid"><div><small>WPM</small><strong>${wpm}</strong></div><div><small>ACCURACY</small><strong>${accuracy.toFixed(1)}%</strong></div><div><small>RAW SPEED</small><strong>${raw}</strong></div><div><small>ERRORS</small><strong>${errors}</strong></div><div><small>TIME</small><strong>${TM.duration(elapsed)}</strong></div><div><small>CHARACTERS</small><strong>${correct}/${total}</strong></div><div><small>SMOOTHNESS</small><strong>${smooth === null ? "—" : smooth + "/100"}</strong></div></div>
       <div class="tt-split"><div><h3>Speed over time <span class="muted">· WPM each second</span></h3>${chart(samples)}</div><div><h3>Keys to practise</h3>${worst.length ? `<div class="tt-keys">${worst.map(([k, n]) => `<span><b>${esc(k === " " ? "space" : k)}</b>×${n}</span>`).join("")}</div>` : '<p class="muted">No mistakes. Clean run!</p>'}<p class="muted tt-note">Typos stay in the analysis even when fixed with Backspace. Saved to your all-time statistics.</p></div></div>
       <div class="score-board"><h3>All-time best performers</h3><p class="muted" id="lbSubmitNote">Checking whether this run makes the leaderboard…</p></div>
-      <div class="result-actions"><button class="btn btn-primary" id="againTest" type="button">↻ New test <span class="kbd" style="margin-left:6px">Enter</span></button><button class="btn btn-secondary" id="sameTest" type="button">Repeat same text</button><a class="btn btn-secondary" href="multiplayer.html">Multiplayer race →</a><a class="btn btn-secondary" href="statistics.html">View statistics →</a></div>`;
+      <div class="result-actions"><button class="btn btn-primary" id="againTest" type="button">↻ New test <span class="kbd" style="margin-left:6px">Enter</span></button><button class="btn btn-secondary" id="sameTest" type="button">Repeat same text</button><a class="btn btn-secondary" href="/multiplayer">Multiplayer race →</a><a class="btn btn-secondary" href="/statistics">View statistics →</a></div>`;
     $("againTest").addEventListener("click", () => reset(true));
     $("sameTest").addEventListener("click", () => reset(false));
     result.scrollIntoView({ block: "start", behavior: "smooth" });

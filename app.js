@@ -744,7 +744,7 @@ const TM = (() => {
     // Warm the next page when the pointer or finger lands on an internal link.
     const seen = new Set();
     const warm = (e) => {
-      const a = e.target.closest && e.target.closest('a[href$=".html"]');
+      const a = e.target.closest && e.target.closest('a[href^="/"]');
       if (
         !a ||
         a.target ||
@@ -762,7 +762,39 @@ const TM = (() => {
     document.addEventListener("pointerover", warm, { passive: true });
     document.addEventListener("touchstart", warm, { passive: true });
   }
+  /* Clean URLs (/practice, /statistics ...) are served by Cloudflare Pages. When the site is opened
+     from a file or a plain local server that does not map them, send the click to the matching .html file. */
+  function setupCleanUrlsFallback() {
+    const local =
+      location.protocol === "file:" ||
+      /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+    if (!local) return;
+    const files = {
+      "/": "index.html",
+      "/practice": "practice.html",
+      "/typing-test": "typing-test.html",
+      "/statistics": "statistics.html",
+      "/settings": "settings.html",
+      "/help": "help.html",
+      "/multiplayer": "multiplayer.html",
+      "/privacy": "privacy.html",
+      "/terms": "terms.html",
+    };
+    const base = () =>
+      location.protocol === "file:"
+        ? location.href.replace(/[^/]*$/, "")
+        : location.origin + "/";
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest && e.target.closest("a[href^='/']");
+      if (!a || a.target || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      const f = files[a.getAttribute("href")];
+      if (!f) return;
+      e.preventDefault();
+      location.href = base() + f;
+    });
+  }
   document.addEventListener("DOMContentLoaded", () => {
+    setupCleanUrlsFallback();
     setupNav();
     applyOpacity();
     updateHome();

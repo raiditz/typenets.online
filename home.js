@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
       !e.altKey &&
       (document.activeElement === document.body || !document.activeElement)
     ) {
-      location.href = "typing.html";
+      const go = document.querySelector(".home-cta");
+      if (go) go.click();
       return;
     }
     if (e.ctrlKey || e.metaKey || e.altKey) return;

@@ -799,3 +799,12 @@ footer{flex-wrap:wrap;font-size:12px}
 .legal b{color:var(--text,inherit)}
 .legal a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 @media(max-width:600px){.legal-hero{padding:24px 20px}}
+
+/* ---------- Surprise · Anime Edition (profile picker) ---------- */
+.tpp-party{position:fixed;inset:0;width:100vw;height:100vh;z-index:10050;pointer-events:none}
+.tpp-surprise{margin:0 0 10px;padding:12px 14px 11px;border-radius:11px;border:1px solid rgba(100,88,245,.18);background:linear-gradient(135deg,rgba(100,88,245,.10),rgba(255,93,143,.08))}
+.tpp-sur-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin-bottom:4px}
+.tpp-sur-title{font:800 24px/1.1 var(--display);letter-spacing:-.8px;color:var(--text)}
+.tpp-sur-ed{font:800 15px/1.2 var(--display);letter-spacing:-.3px;color:var(--accent)}
+.tpp-sur-text{margin:0;font-size:12px;line-height:1.5;color:var(--muted)}
+.tpp-pop .tpp-grid{max-height:min(236px,34vh)}

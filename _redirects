@@ -1,0 +1,7 @@
+# Old page names -> new clean URLs (Cloudflare Pages). Keeps old links, bookmarks and search results working.
+/typing.html         /practice      301
+/typing              /practice      301
+/test.html           /typing-test   301
+/test                /typing-test   301
+/type-settings.html  /settings      301
+/type-settings       /settings      301
