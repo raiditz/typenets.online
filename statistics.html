@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Typing Statistics – Track Your WPM Progress | TypeNets</title>
+    <meta name="description" content="Your personal TypeNets statistics: WPM and accuracy over time, key mastery, practice calendar and session history." />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://typenets.wasmer.app/statistics.html" />
+    <meta name="application-name" content="TypeNets" />
+    <meta name="apple-mobile-web-app-title" content="TypeNets" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="favicon.ico?v=typenets2" sizes="48x48" />
+    <link rel="icon" href="favicon.svg?v=typenets2" type="image/svg+xml" />
+    <link rel="icon" href="favicon-48.png?v=typenets2" type="image/png" sizes="48x48" />
+    <link rel="icon" href="favicon-96.png?v=typenets2" type="image/png" sizes="96x96" />
+    <link rel="icon" href="icon-192.png?v=typenets2" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=typenets2" />
+    <link rel="manifest" href="site.webmanifest?v=typenets2" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TypeNets" />
+    <meta property="og:title" content="Typing Statistics – Track Your WPM Progress | TypeNets" />
+    <meta property="og:description" content="Your personal TypeNets statistics: WPM and accuracy over time, key mastery, practice calendar and session history." />
+    <meta property="og:url" content="https://typenets.wasmer.app/statistics.html" />
+    <meta property="og:image" content="https://typenets.wasmer.app/og-image.png?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="TypeNets logo: a purple spiderweb with the letter t in the center" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Typing Statistics – Track Your WPM Progress | TypeNets" />
+    <meta name="twitter:description" content="Your personal TypeNets statistics: WPM and accuracy over time, key mastery, practice calendar and session history." />
+    <meta name="twitter:image" content="https://typenets.wasmer.app/og-image.png?v=2" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://typenets.wasmer.app/statistics.html#webpage",
+      "url": "https://typenets.wasmer.app/statistics.html",
+      "name": "Typing Statistics – Track Your WPM Progress | TypeNets",
+      "description": "Your personal TypeNets statistics: WPM and accuracy over time, key mastery, practice calendar and session history.",
+      "isPartOf": {
+        "@id": "https://typenets.wasmer.app/#website"
+      },
+      "primaryImageOfPage": "https://typenets.wasmer.app/og-image.png?v=2",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "TypeNets",
+          "item": "https://typenets.wasmer.app/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Statistics",
+          "item": "https://typenets.wasmer.app/statistics.html"
+        }
+      ]
+    }
+  ]
+}
+    </script>
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light" />
+    <style>
+      html {
+        background: #0b0e14;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    /></noscript>
+    <link rel="stylesheet" href="style.css?v=typenets-redesign2" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html"
+        ><img class="brand-logo" src="favicon.svg?v=typenets2" width="32" height="32" alt="" /><span>Type<span class="accent">Nets</span></span></a
+      ><button class="menu-toggle">☰</button>
+      <nav class="nav">
+        <a href="index.html">Home</a><a href="typing.html">Practice</a
+        ><a href="lessons.html">Lessons</a><a href="test.html">Typing test</a
+        ><a class="active" href="statistics.html">Statistics</a
+        ><a href="type-settings.html">Settings</a><a href="help.html">Help</a>
+      </nav>
+    </header>
+    <main class="container page-container">
+      <div class="page-title-row">
+        <div>
+          <div class="eyebrow">YOUR JOURNEY, IN NUMBERS</div>
+          <h1>Statistics<span class="accent">.</span></h1>
+          <p>
+            Your all-time free-practice and typing-test performance, including
+            individual-key mastery.
+          </p>
+        </div>
+        <button class="btn btn-secondary" id="exportStats">
+          ↓ Export data
+        </button>
+      </div>
+      <section class="panel daily-stats-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="eyebrow">TODAY'S PRACTICE</div>
+            <h2>Day statistics</h2>
+            <p class="panel-subtitle">
+              A quick view of today’s typing quality and learning trend.
+            </p>
+          </div>
+          <div class="daily-session-meta">
+            <span><small>SESSIONS</small><b id="statSessionsToday">0</b></span
+            ><span><small>TIME</small><b id="statTimeToday">0s</b></span>
+          </div>
+        </div>
+        <div class="overview-grid stats8 daily-stats-grid">
+          <div class="metric-card">
+            <span class="metric-icon">⌁</span><small>AVG. SPEED</small
+            ><strong id="statDaySpeed">—</strong
+            ><span class="metric-note">Today's mean WPM</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-icon">◎</span><small>ACCURACY</small
+            ><strong id="statDayAcc">—</strong
+            ><span class="metric-note">Today's mean accuracy</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-icon">≈</span><small>SMOOTHNESS</small
+            ><strong id="statDaySmooth">—</strong
+            ><span class="metric-note">Consistency of key timing</span>
+          </div>
+          <div class="metric-card learning-rate-card">
+            <span class="metric-icon">↗</span><small>LEARNING RATE</small
+            ><strong id="statLearningRate">—</strong
+            ><span class="metric-note" id="learningRateNote"
+              >Based on speed, accuracy and smoothness</span
+            >
+          </div>
+        </div>
+        <p class="learning-rate-explainer">
+          Learning rate is an estimated 0–100 indicator combining speed,
+          accuracy and typing smoothness. When several sessions are available,
+          it also reflects whether your performance is improving during the day.
+        </p>
+      </section>
+      <div class="section-kicker">
+        <div class="eyebrow">LONG-TERM PROGRESS</div>
+        <h2>All-time statistics</h2>
+      </div>
+      <div class="overview-grid stats8">
+        <div class="metric-card">
+          <span class="metric-icon">⌁</span><small>AVG. SPEED</small
+          ><strong id="statAvgSpeed">—</strong
+          ><span class="metric-note">Mean WPM across all sessions</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-icon">◎</span><small>AVG. ACCURACY</small
+          ><strong id="statAvgAcc">—</strong
+          ><span class="metric-note">Mean accuracy across all sessions</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-icon">▲</span><small>TOP SPEED</small
+          ><strong id="statTopSpeed">—</strong
+          ><span class="metric-note">Your fastest session</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-icon">✓</span><small>TOP ACCURACY</small
+          ><strong id="statTopAcc">—</strong
+          ><span class="metric-note">Your cleanest session</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-icon">∑</span><small>ALL-TIME TIME</small
+          ><strong id="statTimeAll">—</strong
+          ><span class="metric-note">Total time typed</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-icon">#</span><small>ALL-TIME SESSIONS</small
+          ><strong id="statSessionsAll">—</strong
+          ><span class="metric-note">Practice and test sessions</span>
+        </div>
+      </div>
+      <section class="panel chart-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="eyebrow">PERFORMANCE OVER TIME</div>
+            <h2>Speed &amp; accuracy</h2>
+          </div>
+          <div class="range-pills" id="chartRange">
+            <button data-range="10" class="active">Last 10</button
+            ><button data-range="30">Last 30</button
+            ><button data-range="0">All</button>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <span><i class="dot dot-wpm"></i>Speed (WPM)</span
+          ><span><i class="dot dot-acc"></i>Accuracy (%)</span>
+        </div>
+        <div id="perfChart" class="perf-chart">
+          <div class="empty-state">
+            Complete a practice session, lesson or typing test to start your
+            chart.
+          </div>
+        </div>
+      </section>
+      <section class="panel calendar-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="eyebrow">DAILY PRACTICE</div>
+            <h2>Practice calendar</h2>
+          </div>
+          <div class="goal-control">
+            <label for="goalSelect">Daily goal</label
+            ><select id="goalSelect">
+              <option value="5">5 min</option>
+              <option value="10">10 min</option>
+              <option value="15">15 min</option>
+              <option value="20">20 min</option>
+              <option value="30">30 min</option>
+              <option value="45">45 min</option>
+              <option value="60">60 min</option>
+            </select>
+          </div>
+        </div>
+        <div class="calendar-layout">
+          <div>
+            <div class="cal-nav">
+              <button class="cal-btn" id="calPrev" aria-label="Previous month">
+                ‹</button
+              ><strong id="calTitle">Month</strong
+              ><button class="cal-btn" id="calNext" aria-label="Next month">
+                ›</button
+              ><button class="cal-btn cal-today" id="calToday">Today</button>
+            </div>
+            <div class="cal-weekdays">
+              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span
+              ><span>Fri</span><span>Sat</span><span>Sun</span>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+          </div>
+          <div class="cal-side">
+            <div class="cal-summary">
+              <div><small>ACTIVE DAYS</small><b id="calActive">0</b></div>
+              <div><small>GOAL MET</small><b id="calGoalDays">0</b></div>
+              <div><small>TIME THIS MONTH</small><b id="calTime">0 min</b></div>
+              <div><small>GOAL STREAK</small><b id="calStreak">0 days</b></div>
+            </div>
+            <div class="cal-legend">
+              <small>TIME SPENT vs DAILY GOAL</small>
+              <div class="legend-bar"></div>
+              <div class="legend-labels">
+                <span>0</span><span>½ goal</span><span>Goal ✓</span>
+              </div>
+            </div>
+            <p class="cal-hint">
+              Hover a date to preview that day’s statistics. Tap a date on touch
+              screens.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel letter-stats-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="eyebrow">LETTER PROGRESS</div>
+            <h2>Unlocked letters &amp; mastery</h2>
+            <p class="panel-subtitle">
+              One bar, A to Z. Letters are unlocked only when the active set
+              meets your speed and accuracy targets. Fill intensity follows the
+              mastery scale below. Hover a letter for its numbers.
+            </p>
+          </div>
+        </div>
+        <div id="statsLetterBar"></div>
+      </section>
+
+      <section class="panel key-mastery-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="eyebrow">ALL-TIME KEY PERFORMANCE</div>
+            <h2>Accuracy &amp; speed by key</h2>
+            <p class="panel-subtitle">
+              Each key shows its accuracy (%) and typing speed (WPM). Key colour
+              = mastery.
+            </p>
+          </div>
+          <div class="key-legend">
+            <span>Needs practice</span><i></i><span>Mastered</span>
+          </div>
+        </div>
+        <div
+          id="boardAccSpeed"
+          class="mastery-keyboard"
+          aria-label="Accuracy and speed keyboard"
+        ></div>
+      </section>
+      <section class="panel key-mastery-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="eyebrow">ALL-TIME KEY PERFORMANCE</div>
+            <h2>Clicks &amp; click accuracy by key</h2>
+            <p class="panel-subtitle">
+              Each key shows how many times you pressed it and its click
+              accuracy.
+              <b>Click accuracy = (clicks − wrong clicks) ÷ clicks × 100</b>,
+              where a wrong click is pressing this key when another was
+              expected. Key colour = mastery, same as above.
+            </p>
+          </div>
+          <div class="key-legend">
+            <span>Needs practice</span><i></i><span>Mastered</span>
+          </div>
+        </div>
+        <div
+          id="boardClicks"
+          class="mastery-keyboard"
+          aria-label="Clicks and click accuracy keyboard"
+        ></div>
+      </section>
+      <section class="panel key-mastery-panel">
+        <div id="keyPreview" class="key-preview" aria-live="polite">
+          <div class="key-preview-empty">
+            Hover or tap any key above to see its full statistics. They appear
+            here as you complete practice sessions and typing tests.
+          </div>
+        </div>
+        <p class="key-mastery-note">
+          Mastery combines each key's recent speed, accuracy and number of
+          attempts against your targets in Settings. New or rarely tested keys
+          stay dim.
+        </p>
+      </section>
+      <footer>
+        <span>© 2026 TypeNets</span><span>Progress is personal.</span
+        ><a href="type-settings.html">Adjust practice ↗</a>
+      </footer>
+    </main>
+    <script defer src="curriculum.js?v=typenets2"></script>
+    <script defer src="app.js?v=typenets2"></script>
+    <script defer src="statistics.js?v=typenets2"></script>
+    <script defer src="firebase-config.js?v=typenets2"></script>
+  </body>
+</html>
