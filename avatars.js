@@ -4,11 +4,18 @@
 (function () {
   "use strict";
   const COUNT = 48;
+  // Resolve portraits beside this script instead of from the domain root.
+  // This also works when Cloudflare Pages serves the site from a project subpath.
+  const scriptUrl = document.currentScript && document.currentScript.src
+    ? document.currentScript.src
+    : document.baseURI;
+  const assetBase = new URL(".", scriptUrl);
   const clamp = (i) => {
     i = Math.floor(Number(i));
     return Number.isFinite(i) && i >= 0 && i < COUNT ? i : 0;
   };
-  const url = (i) => "avatars/" + String(clamp(i)).padStart(3, "0") + ".webp?v=2";
+  const url = (i) =>
+    new URL("avatars/" + String(clamp(i)).padStart(3, "0") + ".webp", assetBase).href + "?v=4";
   const random = () => Math.floor(Math.random() * COUNT);
   const token = (i) => "img:" + clamp(i);
   const parse = (s) => {
@@ -24,7 +31,7 @@
       return '<span class="ava-blank ' + (cls || "") + '">' + BLANK + "</span>";
     return (
       '<img class="ava-img ' + (cls || "") + '" src="' + url(i) +
-      '" alt="" width="160" height="160" loading="lazy" decoding="async" draggable="false">'
+      '" alt="" width="160" height="160" loading="eager" decoding="async" draggable="false">'
     );
   };
   const htmlFromToken = (s, cls) => html(parse(s), cls);

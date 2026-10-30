@@ -96,11 +96,19 @@ const TM = (() => {
     `abyss adept agile alibi amble anode apex arid aura axiom banal beret bias blithe brash brisk cache cairn canny chaos chasm cipher civic cleft clout coax covert crypt daunt dearth delve dense dirge dour drab ebb edict elude enigma epoch ethos evade facet fallow feint fervor fickle finite fluke foible forage frugal gaunt glean gloat guile guise hallow havoc heed heresy hoard homage hybrid idiom inert infer innate invoke jargon jostle karma kernel kindle latent lucid lurid mantra meager melee merit mimic myriad naive nuance oasis omen ornate opaque ordeal overt pallid pariah parley patron pique plight plume porous preen primal quaff quail quark quash query quell quirk quota quasar quaver quench quince quirky quorum quibble quizzed quondam quahog quinary quinoid quorate quiesce quirked quashed queller quenched quested quitted quartic quartet quantum qualify rabid rancor rebuke recant relic remit repose robust rueful sagely scant scorn sear shrewd solace sparse spurn static stoic subtle taunt taut temper tenet terse thrive tirade tome toxic tract trite umbra unison urbane usurp vague valor vex viable vigor virtue wary wily wry xenon yield zeal zephyr`.split(
       /\s+/,
     );
+  // Longer, varied vocabulary keeps ordinary practice from feeling like a
+  // short-word drill. These are deliberately curated rather than generated.
+  const EXTRA_NORMAL_LONG_WORDS = `
+    afternoon adventure airplane alphabet ambitious ancient another anybody anything apartment appreciate arrangement attention beautiful beginning believable bicycle birthday boundary breakfast brilliant calendar camera careful celebrate certainly character cheerful chocolate classroom comfortable community completely computer confidence connection continue creative curiosity dangerous daylight decision different difficult discover distance education effective electricity elephant enormous environment especially everything excellent exercise familiar favorite festival financial fireplace football fortunate friendship furniture geography generous genuine government graceful happiness historical hospital however important impossible improvement incredible independent industry information ingredient intelligent interesting introduce journey knowledge language library lightning literature magazine magnificent mathematics meaningful memorable microphone midnight miniature mountain movement musical natural necessary neighborhood newspaper normally nutritious occasion occasionally opposite opportunity ordinary original particular patience peaceful performance permission photograph physical playground pleasure popular powerful practical precious preparation president pressure probably productive profession program pronunciation quality question quiet rather quickly remarkable remember renewable reputation resource restaurant ridiculous scientific secretary sensible separate serious shoulder similar simplicity solution sometimes somewhere specialist spectacular strategy successful suddenly suitable sunshine surprising technology telephone television temperature thoughtful throughout together tomorrow tradition transfer transportation triangle trustworthy umbrella understand university unusual useful valuable variety vegetable victory vocabulary wonderful yesterday yourself
+  `.trim().split(/\s+/);
+  const EXTRA_ADVANCED_LONG_WORDS = `
+    abstraction accessibility accountability accreditation accumulation acknowledgement adolescence advantageous aesthetic affiliation algorithmic ambiguity amplification analytical anticipation apprehensive architecture articulation assimilation authenticity authoritative autobiography beneficial bureaucracy calibration camouflage catastrophe chronological circumference collaboration commencement compatibility compensation comprehension concentration conceptual consequential consideration consolidation constellation contemporary contradiction controversial conventional correspondence craftsmanship credibility crystallization cumulative decipher deliberate demonstration determination differentiation dilemma diligence disappearance disadvantage disciplinary discretion disorientation distinctive distribution documentation eccentricity ecosystem efficiency elaboration electromagnetic eloquence embellishment emergence emphatically encyclopedic endurance engineering enlightenment enthusiasm entrepreneurial environmental equilibrium equivalent establishment evaluation exaggeration exceptional exhilaration existential extraordinary extrapolation familiarity fascinating feasibility fermentation fluorescent formulation functionality fundamental furthermore generalization generosity grammatical gratification gravitational hallucination harmonious hesitation hierarchical hypothetical identification illumination imagination immeasurable implementation implication improvisation inadvertently inconsistency indispensable individuality infrastructure ingenuity initialization innovation instantaneous institution intellectual interpretation interruption investigation justification labyrinthine legitimately legislative longevity magnificent manipulation methodology meticulous miscellaneous misinterpretation miscellaneous moderation momentum monochromatic monumental motivation multifaceted negotiation nevertheless nonchalantly observation occasionally orchestration organization orientation overwhelming painstakingly parallelism perseverance philosophical phenomenon phenomenal picturesque polarization possibility practicality precipitation predicament preliminary preparation prioritization privilege probability procrastination proficiency profound psychological punctuation qualification quintessential questionnaire reconciliation reconstruction reconsideration reconnaissance recommendation reconsideration rectangular redundancy rehabilitation reinforcement relationship remarkable representation resilience resolution responsibility revolutionary rhythmically satisfactory simultaneous sophisticated specification spontaneity stabilization straightforward substitution substantial susceptibility synchronization systematic technically technological telecommunications temperature terminology theoretical therapeutic thoroughness transcendence transformation transparency unprecedented uncharacteristically understanding unforgettable universal university versatility visualization vulnerability wholehearted
+  `.trim().split(/\s+/);
   const unique = (arr) => [
     ...new Set(
       arr
         .map((w) => String(w).toLowerCase())
-        .filter((w) => /^[a-z]{2,7}$/.test(w)),
+        .filter((w) => /^[a-z]{2,18}$/.test(w)),
     ),
   ];
   // Word banks are built on first use only, so pages that never generate text (Home, Statistics, Help...) skip this work.
@@ -108,12 +116,17 @@ const TM = (() => {
   const banks = () =>
     _banks ||
     (_banks = (() => {
-      const normal = unique(WORD_LIST.concat(EXTRA_NORMAL_WORDS)).filter(
-        (w) => w.length <= 5,
-      );
+      const normal = unique(
+        WORD_LIST.concat(EXTRA_NORMAL_WORDS, EXTRA_NORMAL_LONG_WORDS),
+      ).filter((w) => w.length >= 2 && w.length <= 13);
       const advanced = unique(
-        WORD_LIST.concat(EXTRA_NORMAL_WORDS, EXTRA_ADVANCED_WORDS),
-      ).filter((w) => w.length >= 3 && w.length <= 7);
+        WORD_LIST.concat(
+          EXTRA_NORMAL_WORDS,
+          EXTRA_ADVANCED_WORDS,
+          EXTRA_NORMAL_LONG_WORDS,
+          EXTRA_ADVANCED_LONG_WORDS,
+        ),
+      ).filter((w) => w.length >= 3 && w.length <= 18);
       // Every letter has its own two proficiency compartments. Word selection later
       // intersects these banks with the currently unlocked alphabet.
       const letter = Object.fromEntries(
@@ -300,10 +313,10 @@ const TM = (() => {
   function makeText(count = 50, opts = {}) {
     const s = { ...settings(), ...opts };
     const level = s.proficiency === "advanced" ? "advanced" : "normal";
-    // Both modes stay compact: normal 2–5 characters, advanced 3–7. Adaptive
-    // focus only changes which letters are favored; it never changes word length.
-    const minLen = level === "advanced" ? 3 : 2,
-      maxLen = level === "advanced" ? 7 : 5;
+    // Normal practice spans short through long everyday words. Advanced mode
+    // deliberately includes lengthy, less common and awkward-to-type words.
+    const minLen = level === "advanced" ? 3 : 2;
+    const maxLen = level === "advanced" ? 18 : 13;
     const state =
       s.letterUnlock !== false
         ? letterState()
@@ -316,7 +329,7 @@ const TM = (() => {
           w.length <= maxLen &&
           [...w].every((ch) => allowed.has(ch)),
       );
-    // Gather the per-letter compartments, then deduplicate overlapping words.
+
     let pool = unique(
       state.unlocked
         .split("")
@@ -324,7 +337,31 @@ const TM = (() => {
     );
     pool = allAllowed(pool);
     if (!pool.length) pool = allAllowed(banks().normal);
-    const allPool = pool.slice();
+    // Early mastery stages may not yet unlock enough letters for real words.
+    // In that case, use varied letter-pattern drills made only from unlocked keys.
+    if (!pool.length) {
+      const vowels = "aeiou".split("").filter((k) => allowed.has(k));
+      const consonants = "abcdefghijklmnopqrstuvwxyz"
+        .split("")
+        .filter((k) => allowed.has(k) && !"aeiou".includes(k));
+      const generated = new Set();
+      for (let attempt = 0; attempt < 160 && generated.size < 48; attempt++) {
+        const size = minLen + Math.floor(Math.random() * (maxLen - minLen + 1));
+        let word = "";
+        for (let i = 0; i < size; i++) {
+          const choices = i % 2 === 0
+            ? (consonants.length ? consonants : vowels)
+            : (vowels.length ? vowels : consonants);
+          word += pick(choices.length ? choices : [...allowed]);
+        }
+        if (word) generated.add(word);
+      }
+      pool = [...generated];
+    }
+
+    // Do not repeat a word until the eligible pool has been used. This avoids
+    // the old pattern where a word could recur several times in one passage.
+    let remainingWords = pool.slice();
     const ks = keyStats();
     const weakKeys = state.unlocked.split("").filter((k) => {
       const v = ks[k] || {};
@@ -334,57 +371,69 @@ const TM = (() => {
       );
     });
     const pick = (a) => a[Math.floor(Math.random() * a.length)];
-    function pseudo() {
-      const vowels = "aeiou".split("").filter((k) => allowed.has(k));
-      const consonants = "abcdefghijklmnopqrstuvwxyz"
-        .split("")
-        .filter((k) => allowed.has(k) && !"aeiou".includes(k));
-      const n = minLen + Math.floor(Math.random() * (maxLen - minLen + 1));
-      let out = "";
-      for (let i = 0; i < n; i++) {
-        const chars =
-          i % 2 === 0
-            ? consonants.length
-              ? consonants
-              : vowels
-            : vowels.length
-              ? vowels
-              : consonants;
-        out += pick(chars.length ? chars : [...allowed]) || "e";
+    const shuffle = (items) => {
+      const a = items.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
       }
-      return out;
-    }
-    let previous = "";
+      return a;
+    };
+    const lengthBands = level === "advanced"
+      ? [
+          { min: 3, max: 5, weight: 0.10 },
+          { min: 6, max: 8, weight: 0.22 },
+          { min: 9, max: 11, weight: 0.34 },
+          { min: 12, max: 18, weight: 0.34 },
+        ]
+      : [
+          { min: 2, max: 3, weight: 0.18 },
+          { min: 4, max: 5, weight: 0.32 },
+          { min: 6, max: 8, weight: 0.32 },
+          { min: 9, max: 13, weight: 0.18 },
+        ];
     function pickWord() {
-      let candidates = allPool;
-      // Advanced mode favors the deliberately curated harder vocabulary, without
-      // forcing long words. Adaptive focus only biases words inside the same pool.
-      if (level === "advanced" && Math.random() < 0.68) {
-        const hard = allAllowed(
-          (() => {
-            const adv = new Set(banks().advanced);
-            return EXTRA_ADVANCED_WORDS.filter((w) => adv.has(w));
-          })(),
+      if (!remainingWords.length) remainingWords = shuffle(pool);
+      let candidates = remainingWords;
+
+      // Advanced mode leans toward challenging vocabulary while retaining a
+      // useful mixture of familiar and unfamiliar words.
+      if (level === "advanced" && Math.random() < 0.78) {
+        const hardSet = new Set(
+          EXTRA_ADVANCED_WORDS.concat(EXTRA_ADVANCED_LONG_WORDS),
         );
+        const hard = candidates.filter((w) => hardSet.has(w));
         if (hard.length) candidates = hard;
       }
+
       const focus =
         s.adaptivePractice !== false
           ? state.focus || (weakKeys.length ? pick(weakKeys) : null)
           : null;
-      if (focus && Math.random() < 0.7) {
+      if (focus && Math.random() < 0.62) {
         const matched = candidates.filter((w) => w.includes(focus));
         if (matched.length) candidates = matched;
       }
-      let w = pick(candidates) || pick(allPool) || pseudo(),
-        tries = 0;
-      while (w === previous && tries++ < 6)
-        w = pick(candidates) || pick(allPool) || pseudo();
-      previous = w;
-      return w;
+
+      let bandRoll = Math.random();
+      let band = lengthBands[lengthBands.length - 1];
+      for (const option of lengthBands) {
+        bandRoll -= option.weight;
+        if (bandRoll <= 0) { band = option; break; }
+      }
+      const lengthMatched = candidates.filter(
+        (w) => w.length >= band.min && w.length <= band.max,
+      );
+      if (lengthMatched.length) candidates = lengthMatched;
+      const word = pick(candidates) || pick(remainingWords) || "practice";
+      const index = remainingWords.indexOf(word);
+      if (index >= 0) remainingWords.splice(index, 1);
+      return word;
     }
+
     const out = [];
-    for (let i = 0; i < Math.max(1, Number(count) || 50); i++) {
+    const total = Math.max(1, Number(count) || 50);
+    for (let i = 0; i < total; i++) {
       let w = pickWord();
       if (s.capitals && Math.random() < 0.22)
         w = w[0].toUpperCase() + w.slice(1);

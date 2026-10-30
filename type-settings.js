@@ -84,22 +84,28 @@ document.addEventListener("DOMContentLoaded", () => {
     save();
   });
   fill();
-  $("clearData").addEventListener("click", () => {
-    if (
-      !confirm(
-        "Erase ALL sessions, key statistics and lesson progress on this device? Your settings are kept. This cannot be undone.",
-      )
-    )
-      return;
-    [
-      "typingHistory",
-      "keyStatsV1",
-      "lessonProgressV2",
-      "uiStats",
-      "unlockedCountV1",
-      "customProgressV1",
-    ].forEach((k) => localStorage.removeItem(k));
-    renderUnlockPreview();
-    $("settingsSaved").textContent = "✓ All progress and statistics erased";
+  $("clearData").addEventListener("click", async () => {
+    const dialog = document.createElement("div");
+    dialog.className = "tp-delete-overlay";
+    dialog.innerHTML = `<section class="tp-delete-dialog" role="dialog" aria-modal="true" aria-labelledby="tpDeleteTitle">
+      <div class="eyebrow">PERMANENT ACTION</div><h2 id="tpDeleteTitle">Delete all progress?</h2>
+      <p>This permanently erases practice sessions, key statistics, unlocked-letter progress and personal records stored in this browser.</p>
+      <p><strong>Your Supabase username profile and leaderboard entry will also be deleted</strong>, releasing the username for other players. This cannot be undone. You will need to create a new profile for a permanent multiplayer identity.</p>
+      <p class="muted">If the server is unreachable, local progress will still be erased, but online profile deletion may need to be retried.</p>
+      <div class="tp-delete-actions"><button type="button" class="btn btn-secondary" data-cancel>Cancel</button><button type="button" class="btn tp-delete-confirm" data-confirm>Delete everything</button></div>
+    </section>`;
+    document.body.appendChild(dialog);
+    const close = () => dialog.remove();
+    dialog.querySelector("[data-cancel]").addEventListener("click", close);
+    dialog.addEventListener("click", e => { if (e.target === dialog) close(); });
+    dialog.querySelector("[data-confirm]").addEventListener("click", async e => {
+      const btn = e.currentTarget; btn.disabled = true; btn.textContent = "Deleting…";
+      let serverError = null;
+      try { if (window.TPLeaderboard && TPLeaderboard.configured()) await TPLeaderboard.deleteProfile(); }
+      catch (err) { serverError = err; }
+      ["typingHistory","keyStatsV1","lessonProgressV2","uiStats","unlockedCountV1","customProgressV1","typepilotMultiHighScores","typepilotLeaderboardProfile","typepilotDisplayName"].forEach(k => localStorage.removeItem(k));
+      close(); renderUnlockPreview();
+      $("settingsSaved").textContent = serverError ? "Local progress erased. Online profile deletion failed — retry or contact support." : "✓ All progress erased; online username profile deleted.";
+    });
   });
 });

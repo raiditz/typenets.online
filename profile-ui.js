@@ -491,7 +491,7 @@
       : "Choose your username";
     els.intro.textContent = hasProfile
       ? "Your username is shown on the leaderboard and in multiplayer races."
-      : "This is the name other typists see on the leaderboard and in multiplayer races.";
+      : "This is the name other typists see on the leaderboard and in multiplayer races. Permanent profiles require browser storage; in private/incognito windows, use the temporary guest option for races instead.";
     els.name.readOnly = locked;
     els.inputbox.classList.toggle("is-locked", locked);
     els.inputbox.dataset.state = st;

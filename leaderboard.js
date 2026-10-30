@@ -271,6 +271,16 @@
     if (error) throw error;
     return { status: "saved" };
   }
+  async function deleteProfile() {
+    await connect();
+    const { error } = await client.rpc("delete_my_username_profile");
+    if (error) throw new Error(error.message || "Could not delete the Supabase profile.");
+    try {
+      localStorage.removeItem("typepilotLeaderboardProfile");
+      localStorage.removeItem("typepilotDisplayName");
+    } catch (_) {}
+    return true;
+  }
   async function myUid() {
     try {
       return (await connect()).id;
